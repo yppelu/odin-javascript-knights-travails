@@ -1,4 +1,38 @@
-const boardGraph = buildGraphOfPossibleMoves();
+const movesGraph = buildGraphOfPossibleMoves();
+
+function knightMoves(src, dest) {
+  src = `${src[0]},${src[1]}`;
+  dest = `${dest[0]},${dest[1]}`;
+  const visitedCells = new Set();
+
+  const queue = [[src]];
+  while (queue.length > 0) {
+    const current = queue.shift();
+    const lastMove = current[current.length - 1];
+
+    if (lastMove === dest) {
+      printPath(current);
+      return true;
+    }
+
+    for (let i = 0; i < movesGraph[lastMove].length; i++) {
+      if (!visitedCells.has(movesGraph[lastMove][i])) {
+        queue.push([...current, movesGraph[lastMove][i]]);
+      }
+    }
+
+    visitedCells.add(lastMove);
+  }
+
+  return false;
+}
+
+function printPath(moves) {
+  console.log(`You made it in ${moves.length - 1} moves! Here's your path:`);
+  for (let i = 0; i < moves.length; i++) {
+    console.log(moves[i]);
+  }
+}
 
 function buildGraphOfPossibleMoves() {
   const graph = {};
